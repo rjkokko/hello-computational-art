@@ -1,0 +1,16 @@
+{
+  "name": "hello-computatinal-art",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "tsc",
+    "watch:ts": "tsc -w",
+    "serve": "cp static/index.html ./dist && serve ./dist/",
+    "dev": "yarn watch:ts && serve"
+  },
+  "devDependencies": {
+    "serve": "^11.0.0",
+    "typescript": "^3.4.5"
+  }
+}
