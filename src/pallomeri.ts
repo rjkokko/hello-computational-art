@@ -1,3 +1,5 @@
+import { getCurrentIntensity, init } from './sound-analyzer.js';
+
 // Get the canvas DOM element
 const canvas = document.getElementById(
     'renderCanvas',
@@ -81,7 +83,7 @@ const createScene = function() {
             sphere.physicsImpostor = new BABYLON.PhysicsImpostor(
                 sphere,
                 BABYLON.PhysicsImpostor.SphereImpostor,
-                { mass: 1, restitution: 0.9 },
+                { mass: 1, restitution: 0.1 },
                 scene,
             );
 
@@ -94,26 +96,37 @@ const createScene = function() {
     // Return the created scene
     return { scene, elements };
 };
-// call the createScene function
-const { scene, elements } = createScene();
 
-let numberOfLoops = 0;
-// run the render loop
-engine.runRenderLoop(() => {
-    numberOfLoops++;
-    if (numberOfLoops >= 60) {
-        numberOfLoops = 0;
-        const impulseVector = new BABYLON.Vector3(0, 3, 0);
-        elements.forEach((elem) => {
-            const position = elem.getAbsolutePosition();
-            if (position.y <= 1) {
-                elem.physicsImpostor!.applyImpulse(impulseVector, position);
-            }
-        });
-    }
+document.querySelector('button')!.addEventListener('click', function() {
+    this.hidden = true;
+    init();
+    const { scene, elements } = createScene();
+    let numberOfLoops = 0;
+    // run the render loop
+    engine.runRenderLoop(() => {
+        numberOfLoops++;
+        if (numberOfLoops >= 2) {
+            numberOfLoops = 0;
+            const audioIntensity = getCurrentIntensity();
+            const bassIntesity =
+                (audioIntensity[0] + audioIntensity[1] + audioIntensity[2]) / 3;
+            const impulseVector = new BABYLON.Vector3(
+                0,
+                (bassIntesity * 3) / 100,
+                0,
+            );
+            elements.forEach((elem) => {
+                const position = elem.getAbsolutePosition();
+                if (position.y <= 1) {
+                    elem.physicsImpostor!.applyImpulse(impulseVector, position);
+                }
+            });
+        }
 
-    scene.render();
+        scene.render();
+    });
 });
+// call the createScene function
 
 // setTimeout(() => {
 //   const impulseVector = new BABYLON.Vector3(0, 10, 0);

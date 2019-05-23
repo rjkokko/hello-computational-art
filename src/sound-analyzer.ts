@@ -23,4 +23,42 @@ if (navigator.mediaDevices.getUserMedia === undefined) {
         });
     };
 }
-export {};
+let analyser: AnalyserNode;
+let source;
+let bufferLengthAlt: number;
+function init() {
+    let audioConstructor = AudioContext || window.webkitAudioContext;
+    let audioCtx = new audioConstructor();
+    analyser = audioCtx.createAnalyser();
+    analyser.minDecibels = -90;
+    analyser.maxDecibels = -10;
+    analyser.smoothingTimeConstant = 0.85;
+    analyser.fftSize = 32;
+    bufferLengthAlt = analyser.frequencyBinCount;
+
+    if (navigator.mediaDevices.getUserMedia) {
+        console.log('getUserMedia supported.');
+        var constraints = { audio: true };
+        navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then(function(stream) {
+                source = audioCtx.createMediaStreamSource(stream);
+                source.connect(analyser);
+            })
+            .catch(function(err) {
+                console.log('The following gUM error occured: ' + err);
+            });
+    } else {
+        console.log('getUserMedia not supported on your browser!');
+    }
+}
+// });
+
+function getCurrentIntensity() {
+    let dataArrayAlt = new Uint8Array(bufferLengthAlt);
+    if (analyser) {
+        analyser.getByteFrequencyData(dataArrayAlt);
+    }
+    return dataArrayAlt;
+}
+export { init, getCurrentIntensity };
