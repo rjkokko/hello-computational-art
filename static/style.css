@@ -9,6 +9,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 #lander {
@@ -24,6 +25,9 @@ body {
 }
 #intro {
     margin-bottom: 1em;
+}
+iframe {
+    margin-top: 1em;
 }
 button {
     border: solid 3px #762596;
