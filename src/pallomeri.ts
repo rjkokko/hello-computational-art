@@ -186,7 +186,7 @@ const createScene = function() {
 };
 
 document.querySelector('button')!.addEventListener('click', function() {
-    this.style.display = 'none';
+    document.querySelector('#lander')!.remove();
     init();
     const { scene, elements } = createScene();
     // showAxis(5, scene);
