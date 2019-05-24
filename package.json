@@ -6,10 +6,15 @@
     "scripts": {
         "tsc": "tsc",
         "watch:ts": "tsc -w",
-        "serve": "cp static/* ./dist && serve ./dist/",
-        "dev": "yarn watch:ts && serve"
+        "watch:static": "copy-and-watch --watch static/**/* ./dist/",
+        "watch": "yarn watch:ts && yarn watch:static",
+        "serve": "serve ./dist/",
+        "dev": "concurrently -p \"[{name}]\" -n \"TS,NODE,SERVE\" -c \"bgBlue.bold,bgMagenta.bold,bgYellow.bold\" \"yarn run watch:ts\" \"yarn run watch:static\" \"yarn run serve\"",
+        "dev2": "yarn watch && serve"
     },
     "devDependencies": {
+        "concurrently": "^4.1.0",
+        "copy-and-watch": "^0.1.2",
         "serve": "^11.0.0",
         "typescript": "^3.4.5"
     },
