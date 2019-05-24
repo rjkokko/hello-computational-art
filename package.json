@@ -1,31 +1,27 @@
 {
-    "name": "hello-computatinal-art",
-    "version": "1.0.0",
-    "main": "dist/index.js",
-    "license": "MIT",
-    "scripts": {
-        "tsc": "tsc",
-        "watch:ts": "tsc -w",
-        "watch:static": "copy-and-watch --watch static/**/* ./dist/",
-        "watch": "yarn watch:ts && yarn watch:static",
-        "serve": "serve ./dist/",
-        "dev": "concurrently -p \"[{name}]\" -n \"TS,NODE,SERVE\" -c \"bgBlue.bold,bgMagenta.bold,bgYellow.bold\" \"yarn run watch:ts\" \"yarn run watch:static\" \"yarn run serve\"",
-        "dev2": "yarn watch && serve"
-    },
-    "devDependencies": {
-        "concurrently": "^4.1.0",
-        "copy-and-watch": "^0.1.2",
-        "serve": "^11.0.0",
-        "typescript": "^3.4.5"
-    },
-    "dependencies": {
-        "babylonjs": "^4.0.3"
-    },
-    "prettier": {
-        "tabWidth": 4,
-        "singleQuote": true,
-        "trailingComma": "all",
-        "arrowParens": "always",
-        "proseWrap": "always"
-    }
+  "name": "hello-computatinal-art",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "tsc": "tsc",
+    "watch:ts": "tsc -w",
+    "serve": "serve .",
+    "dev": "concurrently -p \"[{name}]\" -n \"TS,SERVE\" -c \"bgBlue.bold,bgYellow.bold\" \"yarn run watch:ts\" \"yarn run serve\""
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "serve": "^11.0.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "babylonjs": "^4.0.3"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "always",
+    "proseWrap": "always"
+  }
 }
