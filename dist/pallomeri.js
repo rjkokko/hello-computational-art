@@ -1,14 +1,8 @@
 import { getCurrentIntensity, init } from './sound-analyzer.js';
 import { createMetal, createGlass } from './materials.js';
-// Get the canvas DOM element
-const canvas = document.getElementById('renderCanvas');
 // Load the 3D engine
-const engine = new BABYLON.Engine(canvas, true, {
-    preserveDrawingBuffer: true,
-    stencil: true,
-});
 // CreateScene function that creates and return the scene
-const createScene = function () {
+const createScene = function (engine, canvas) {
     const ROW_SIZE = 35;
     const NUMBER_OF_ELEMS = 800;
     const NUMBER_OF_LAYERS = 1;
@@ -111,9 +105,22 @@ const createScene = function () {
     return { scene, elements };
 };
 document.querySelector('button').addEventListener('click', function () {
-    document.querySelector('#lander').remove();
+    const canvas = document.createElement('canvas');
+    canvas.width = 1600;
+    canvas.height = 900;
+    canvas.id = 'renderCanvas';
+    document.querySelector('#lander').replaceWith(canvas);
+    // the canvas/window resize event handler
+    // the canvas/window resize event handler
+    const engine = new BABYLON.Engine(canvas, true, {
+        preserveDrawingBuffer: true,
+        stencil: true,
+    });
+    window.addEventListener('resize', function () {
+        engine.resize();
+    });
     init();
-    const { scene, elements } = createScene();
+    const { scene, elements } = createScene(engine, canvas);
     // showAxis(5, scene);
     let numberOfLoops = 0;
     // run the render loop
@@ -135,8 +142,4 @@ document.querySelector('button').addEventListener('click', function () {
     });
 });
 // call the createScene function
-// the canvas/window resize event handler
-window.addEventListener('resize', function () {
-    engine.resize();
-});
 //# sourceMappingURL=pallomeri.js.map
