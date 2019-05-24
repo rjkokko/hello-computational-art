@@ -1,4 +1,5 @@
 import { getCurrentIntensity, init } from './sound-analyzer.js';
+import { createMetal, createGlass } from './materials.js';
 
 // Get the canvas DOM element
 const canvas = document.getElementById(
@@ -14,7 +15,7 @@ const engine = new BABYLON.Engine(canvas, true, {
 const createScene = function() {
     const ROW_SIZE = 35;
     const NUMBER_OF_ELEMS = 800;
-    const NUMBER_OF_LAYERS = 2;
+    const NUMBER_OF_LAYERS = 1;
     // Create a basic BJS Scene object
     const scene = new BABYLON.Scene(engine);
     scene.enablePhysics(null, new BABYLON.OimoJSPlugin());
@@ -39,23 +40,41 @@ const createScene = function() {
     //   Create a basic light, aiming 0, 1, 0 - meaning, to the sky
     const light = new BABYLON.HemisphericLight(
         'light1',
-        new BABYLON.Vector3(3, 1, -1),
+        new BABYLON.Vector3(0, 1, 0),
         scene,
     );
 
-    const groundMaterial = new BABYLON.StandardMaterial('mat', scene);
-    groundMaterial.emissiveTexture = new BABYLON.Texture(
-        '1024px-Hubble_ultra_deep_field_high_rez_edit1.jpg',
-        scene,
-    );
-    groundMaterial.diffuseColor = BABYLON.Color3.Black();
+    // const glass = new BABYLON.StandardMaterial('mat', scene);
+    // glass.emissiveTexture = new BABYLON.Texture(
+    //     '1024px-Hubble_ultra_deep_field_high_rez_edit1.jpg',
+    //     scene,
+    // );
+    // glass.diffuseColor = BABYLON.Color3.Black();
+    // const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
+    //     'night.dds',
+    //     scene,
+    // );
+    const hdrTexture = new BABYLON.HDRCubeTexture('night.hdr', scene, 512);
+    var hdrSkybox = BABYLON.Mesh.CreateBox('hdrSkyBox', 1000.0, scene);
+    hdrSkybox.isPickable = false;
+    var hdrSkyboxMaterial = new BABYLON.PBRMaterial('skyBox', scene);
+    hdrSkyboxMaterial.backFaceCulling = false;
+    hdrSkyboxMaterial.reflectionTexture = hdrTexture.clone();
+    hdrSkyboxMaterial.reflectionTexture.coordinatesMode =
+        BABYLON.Texture.SKYBOX_MODE;
+    hdrSkyboxMaterial.microSurface = 1.0;
+    hdrSkyboxMaterial.disableLighting = true;
+    hdrSkybox.material = hdrSkyboxMaterial;
+    hdrSkybox.infiniteDistance = true;
+
+    const glass = createGlass(scene, hdrTexture);
     // Ground
     let ground = BABYLON.Mesh.CreateBox('Ground', 1, scene);
 
     ground.scaling = new BABYLON.Vector3(50, 1, 50);
     ground.position.y = 0;
     ground.checkCollisions = true;
-    ground.material = groundMaterial;
+    ground.material = glass;
 
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(
         ground,
@@ -66,33 +85,33 @@ const createScene = function() {
 
     // Walls
     var border0 = BABYLON.Mesh.CreateBox('border0', 1, scene);
-    border0.scaling = new BABYLON.Vector3(1, 100, 100);
-    border0.position.y = -5.0;
+    border0.scaling = new BABYLON.Vector3(1, 10, 50);
+    border0.position.y = 5.0;
     border0.position.x = -25.0;
     border0.checkCollisions = true;
 
     var border1 = BABYLON.Mesh.CreateBox('border1', 1, scene);
-    border1.scaling = new BABYLON.Vector3(1, 100, 100);
-    border1.position.y = -5.0;
+    border1.scaling = new BABYLON.Vector3(1, 10, 50);
+    border1.position.y = 5.0;
     border1.position.x = 25.0;
     border1.checkCollisions = true;
 
     var border2 = BABYLON.Mesh.CreateBox('border2', 1, scene);
-    border2.scaling = new BABYLON.Vector3(100, 100, 1);
-    border2.position.y = -5.0;
+    border2.scaling = new BABYLON.Vector3(50, 10, 1);
+    border2.position.y = 5.0;
     border2.position.z = 25.0;
     border2.checkCollisions = true;
 
     var border3 = BABYLON.Mesh.CreateBox('border3', 1, scene);
-    border3.scaling = new BABYLON.Vector3(100, 100, 1);
-    border3.position.y = -5.0;
+    border3.scaling = new BABYLON.Vector3(50, 10, 1);
+    border3.position.y = 5.0;
     border3.position.z = -25.0;
     border3.checkCollisions = true;
 
-    border0.material = groundMaterial;
-    border1.material = groundMaterial;
-    border2.material = groundMaterial;
-    border3.material = groundMaterial;
+    border0.material = glass;
+    border1.material = glass;
+    border2.material = glass;
+    border3.material = glass;
 
     border0.physicsImpostor = new BABYLON.PhysicsImpostor(
         border0,
@@ -119,9 +138,8 @@ const createScene = function() {
         scene,
     );
 
-    ground.receiveShadows = true;
-
     let elements: BABYLON.Mesh[] = [];
+    const metal = createMetal(scene, hdrTexture);
     for (let j = 0; j < NUMBER_OF_LAYERS; j++) {
         for (let i = 0; i < NUMBER_OF_ELEMS; i++) {
             // Create a built-in "sphere" shape; its constructor takes 6 params: name, segment, diameter, scene, updatable, sideOrientation
@@ -142,10 +160,8 @@ const createScene = function() {
             // sphere.position.z = Math.floor(i / ROW_SIZE);
             sphere.position.y = 2 * j;
 
-            const mat = new BABYLON.StandardMaterial('mat', scene);
-            mat.emissiveTexture = new BABYLON.Texture('grass.png', scene);
-            mat.diffuseColor = BABYLON.Color3.Yellow();
-            sphere.material = mat;
+            sphere.material = metal;
+            sphere.translate(new BABYLON.Vector3(1, 0, 0), 3);
 
             // physics
             sphere.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -166,7 +182,7 @@ const createScene = function() {
 };
 
 document.querySelector('button')!.addEventListener('click', function() {
-    this.hidden = true;
+    this.style.display = 'none';
     init();
     const { scene, elements } = createScene();
     // showAxis(5, scene);
