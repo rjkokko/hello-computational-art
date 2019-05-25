@@ -10,6 +10,7 @@ const createScene = function(
     const ROW_SIZE = 35;
     const NUMBER_OF_ELEMS = 800;
     const NUMBER_OF_LAYERS = 1;
+    const BOX_SIDE_LENGTH = 50;
     // Create a basic BJS Scene object
     const scene = new BABYLON.Scene(engine);
     scene.enablePhysics(null, new BABYLON.OimoJSPlugin());
@@ -28,7 +29,8 @@ const createScene = function(
         0,
         // (0.5 * NUMBER_OF_ELEMS) / ROW_SIZE,
     );
-    camera.setTarget(center);
+    const cameraTarget = new BABYLON.Vector3(25, 5, 25);
+    camera.setTarget(cameraTarget);
     // Attach the camera to the canvas
     camera.attachControl(canvas as HTMLElement, false);
     //   Create a basic light, aiming 0, 1, 0 - meaning, to the sky
@@ -69,7 +71,7 @@ const createScene = function(
     // Ground
     let ground = BABYLON.Mesh.CreateBox('Ground', 1, scene);
 
-    ground.scaling = new BABYLON.Vector3(50, 1, 50);
+    ground.scaling = new BABYLON.Vector3(BOX_SIDE_LENGTH, 1, BOX_SIDE_LENGTH);
     ground.position.y = 0;
     ground.checkCollisions = true;
     ground.material = glass;
@@ -83,27 +85,27 @@ const createScene = function(
 
     // Walls
     var border0 = BABYLON.Mesh.CreateBox('border0', 1, scene);
-    border0.scaling = new BABYLON.Vector3(1, 10, 50);
+    border0.scaling = new BABYLON.Vector3(1, 10, BOX_SIDE_LENGTH);
     border0.position.y = 5.0;
-    border0.position.x = -25.0;
+    border0.position.x = -BOX_SIDE_LENGTH / 2;
     border0.checkCollisions = true;
 
     var border1 = BABYLON.Mesh.CreateBox('border1', 1, scene);
-    border1.scaling = new BABYLON.Vector3(1, 10, 50);
+    border1.scaling = new BABYLON.Vector3(1, 10, BOX_SIDE_LENGTH);
     border1.position.y = 5.0;
-    border1.position.x = 25.0;
+    border1.position.x = BOX_SIDE_LENGTH / 2;
     border1.checkCollisions = true;
 
     var border2 = BABYLON.Mesh.CreateBox('border2', 1, scene);
-    border2.scaling = new BABYLON.Vector3(50, 10, 1);
+    border2.scaling = new BABYLON.Vector3(BOX_SIDE_LENGTH, 10, 1);
     border2.position.y = 5.0;
-    border2.position.z = 25.0;
+    border2.position.z = BOX_SIDE_LENGTH / 2;
     border2.checkCollisions = true;
 
     var border3 = BABYLON.Mesh.CreateBox('border3', 1, scene);
-    border3.scaling = new BABYLON.Vector3(50, 10, 1);
+    border3.scaling = new BABYLON.Vector3(BOX_SIDE_LENGTH, 10, 1);
     border3.position.y = 5.0;
-    border3.position.z = -25.0;
+    border3.position.z = -BOX_SIDE_LENGTH / 2;
     border3.checkCollisions = true;
 
     border0.material = glass;
@@ -186,7 +188,6 @@ document.querySelector('button')!.addEventListener('click', function() {
     canvas.id = 'renderCanvas';
     document.querySelector('#lander')!.replaceWith(canvas);
     // the canvas/window resize event handler
-    // the canvas/window resize event handler
     const engine = new BABYLON.Engine(canvas, true, {
         preserveDrawingBuffer: true,
         stencil: true,
@@ -196,6 +197,7 @@ document.querySelector('button')!.addEventListener('click', function() {
     });
     init();
     const { scene, elements } = createScene(engine, canvas);
+    // scene.debugLayer.show();
     // showAxis(5, scene);
     let numberOfLoops = 0;
     // run the render loop
@@ -213,7 +215,12 @@ document.querySelector('button')!.addEventListener('click', function() {
         );
         elements.forEach((elem) => {
             const position = elem.getAbsolutePosition();
-            if (position.y <= 1 && position.y >= 0) {
+            if (
+                position.y <= 1 &&
+                position.y >= 0 &&
+                position.x < 25 &&
+                position.z < 25
+            ) {
                 elem.physicsImpostor!.applyImpulse(impulseVector, position);
             }
         });
