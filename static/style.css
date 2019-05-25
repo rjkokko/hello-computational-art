@@ -10,9 +10,16 @@ body {
     text-align: center;
     font-family: 'Economica', sans-serif;
 
-    font-size: 3rem;
+    font-size: 6vw;
     color: rgb(187, 188, 197);
 }
+
+@media only screen and (max-width: 600px) {
+    body {
+        font-size: 10vw;
+    }
+}
+
 #main {
     display: flex;
     justify-content: center;
@@ -34,7 +41,7 @@ iframe {
     margin-top: 1em;
 }
 #browser-support {
-    font-size: 0.5rem;
+    font-size: 0.25em;
     font-style: italic;
 }
 button {
