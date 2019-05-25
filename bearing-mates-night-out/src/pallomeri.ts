@@ -51,7 +51,7 @@ const createScene = function(
     //     scene,
     // );
     const hdrTexture = new BABYLON.HDRCubeTexture(
-        'static/night.hdr',
+        '/bearing-mates-night-out/static/night.hdr',
         scene,
         512,
     );

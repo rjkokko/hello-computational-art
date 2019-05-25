@@ -31,7 +31,7 @@ const createScene = function (engine, canvas) {
     //     'night.dds',
     //     scene,
     // );
-    const hdrTexture = new BABYLON.HDRCubeTexture('static/night.hdr', scene, 512);
+    const hdrTexture = new BABYLON.HDRCubeTexture('/bearing-mates-night-out/static/night.hdr', scene, 512);
     var hdrSkybox = BABYLON.Mesh.CreateBox('hdrSkyBox', 1000.0, scene);
     hdrSkybox.isPickable = false;
     var hdrSkyboxMaterial = new BABYLON.PBRMaterial('skyBox', scene);
