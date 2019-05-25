@@ -22,7 +22,6 @@ const createScene = function(
         new BABYLON.Vector3(0, 20, 0),
         scene,
     );
-    camera.
     // Target the camera to scene origin
     const center = new BABYLON.Vector3(
         0,
