@@ -158,7 +158,7 @@ const createScene = function(
             // sphere.position.y = Math.random() * 2 + 2 * j;
             // sphere.position.x = i % ROW_SIZE;
             // sphere.position.z = Math.floor(i / ROW_SIZE);
-            sphere.position.y = 2 * j;
+            sphere.position.y = 2 * j + 3;
 
             sphere.material = metal;
             sphere.translate(new BABYLON.Vector3(1, 0, 0), 3);
@@ -175,8 +175,6 @@ const createScene = function(
         }
     }
 
-    // Create a built-in "ground" shape; its constructor takes 6 params : name, width, height, subdivision, scene, updatable
-    //   const ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene, false);
     // Return the created scene
     return { scene, elements };
 };
