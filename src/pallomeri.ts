@@ -17,11 +17,12 @@ const createScene = function(
 
     //   scene.debugLayer.show();
     // Create a FreeCamera, and set its position to {x: 0, y: 5, z: -10}
-    const camera = new BABYLON.FreeCamera(
-        'camera1',
+    const camera = new BABYLON.UniversalCamera(
+        'UniversalCamera',
         new BABYLON.Vector3(0, 20, 0),
         scene,
     );
+    camera.
     // Target the camera to scene origin
     const center = new BABYLON.Vector3(
         0,
