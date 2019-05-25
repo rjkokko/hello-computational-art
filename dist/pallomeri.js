@@ -108,8 +108,8 @@ const createScene = function (engine, canvas) {
 };
 document.querySelector('button').addEventListener('click', function () {
     const canvas = document.createElement('canvas');
-    canvas.width = 1600;
-    canvas.height = 900;
+    canvas.width = window.innerWidth || 1600;
+    canvas.height = window.innerHeight || 900;
     canvas.id = 'renderCanvas';
     document.querySelector('#lander').replaceWith(canvas);
     // the canvas/window resize event handler
