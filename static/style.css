@@ -1,6 +1,6 @@
 @import 'https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css';
 @import url('https://fonts.googleapis.com/css?family=Economica&display=swap');
-body {
+html {
     background: rgb(251, 165, 63);
     background: radial-gradient(
         circle,
