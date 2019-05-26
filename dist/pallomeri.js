@@ -1,7 +1,5 @@
 import { getCurrentIntensity, init } from './sound-analyzer.js';
 import { createMetal, createGlass } from './materials.js';
-// Load the 3D engine
-// CreateScene function that creates and return the scene
 const createScene = function (engine, canvas) {
     const ROW_SIZE = 35;
     const NUMBER_OF_ELEMS = 800;
@@ -10,8 +8,6 @@ const createScene = function (engine, canvas) {
     // Create a basic BJS Scene object
     const scene = new BABYLON.Scene(engine);
     scene.enablePhysics(null, new BABYLON.OimoJSPlugin());
-    //   scene.debugLayer.show();
-    // Create a FreeCamera, and set its position to {x: 0, y: 5, z: -10}
     const camera = new BABYLON.UniversalCamera('UniversalCamera', new BABYLON.Vector3(0, 20, 0), scene);
     // Target the camera to scene origin
     const center = new BABYLON.Vector3(0, 0, 0);
@@ -21,17 +17,7 @@ const createScene = function (engine, canvas) {
     camera.attachControl(canvas, false);
     //   Create a basic light, aiming 0, 1, 0 - meaning, to the sky
     const light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
-    // const glass = new BABYLON.StandardMaterial('mat', scene);
-    // glass.emissiveTexture = new BABYLON.Texture(
-    //     '1024px-Hubble_ultra_deep_field_high_rez_edit1.jpg',
-    //     scene,
-    // );
-    // glass.diffuseColor = BABYLON.Color3.Black();
-    // const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
-    //     'night.dds',
-    //     scene,
-    // );
-    const hdrTexture = new BABYLON.HDRCubeTexture('/bearing-mates-night-out/static/night.hdr', scene, 512);
+    const hdrTexture = new BABYLON.HDRCubeTexture('../bearing-mates-night-out/static/night.hdr', scene, 512);
     var hdrSkybox = BABYLON.Mesh.CreateBox('hdrSkyBox', 1000.0, scene);
     hdrSkybox.isPickable = false;
     var hdrSkyboxMaterial = new BABYLON.PBRMaterial('skyBox', scene);
@@ -80,11 +66,11 @@ const createScene = function (engine, canvas) {
     border1.physicsImpostor = new BABYLON.PhysicsImpostor(border1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     border2.physicsImpostor = new BABYLON.PhysicsImpostor(border2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
     border3.physicsImpostor = new BABYLON.PhysicsImpostor(border3, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
+    // Spheres
     let elements = [];
     const metal = createMetal(scene, hdrTexture);
     for (let j = 0; j < NUMBER_OF_LAYERS; j++) {
         for (let i = 0; i < NUMBER_OF_ELEMS; i++) {
-            // Create a built-in "sphere" shape; its constructor takes 6 params: name, segment, diameter, scene, updatable, sideOrientation
             const sphere = BABYLON.Mesh.CreateSphere('sphere1', 16, 1, scene, false, BABYLON.Mesh.FRONTSIDE);
             sphere.position.x =
                 (i % ROW_SIZE) + Math.random() - 0.1 - ROW_SIZE / 2;
@@ -122,7 +108,6 @@ document.querySelector('button').addEventListener('click', function () {
     const { scene, elements } = createScene(engine, canvas);
     // scene.debugLayer.show();
     // showAxis(5, scene);
-    let numberOfLoops = 0;
     // run the render loop
     engine.runRenderLoop(() => {
         // numberOfLoops++;
@@ -144,5 +129,4 @@ document.querySelector('button').addEventListener('click', function () {
         scene.render();
     });
 });
-// call the createScene function
 //# sourceMappingURL=pallomeri.js.map

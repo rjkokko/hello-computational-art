@@ -1,8 +1,6 @@
 import { getCurrentIntensity, init } from './sound-analyzer.js';
 import { createMetal, createGlass } from './materials.js';
 
-// Load the 3D engine
-// CreateScene function that creates and return the scene
 const createScene = function(
     engine: BABYLON.Engine,
     canvas: HTMLCanvasElement,
@@ -15,8 +13,6 @@ const createScene = function(
     const scene = new BABYLON.Scene(engine);
     scene.enablePhysics(null, new BABYLON.OimoJSPlugin());
 
-    //   scene.debugLayer.show();
-    // Create a FreeCamera, and set its position to {x: 0, y: 5, z: -10}
     const camera = new BABYLON.UniversalCamera(
         'UniversalCamera',
         new BABYLON.Vector3(0, 20, 0),
@@ -40,18 +36,8 @@ const createScene = function(
         scene,
     );
 
-    // const glass = new BABYLON.StandardMaterial('mat', scene);
-    // glass.emissiveTexture = new BABYLON.Texture(
-    //     '1024px-Hubble_ultra_deep_field_high_rez_edit1.jpg',
-    //     scene,
-    // );
-    // glass.diffuseColor = BABYLON.Color3.Black();
-    // const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData(
-    //     'night.dds',
-    //     scene,
-    // );
     const hdrTexture = new BABYLON.HDRCubeTexture(
-        '/bearing-mates-night-out/static/night.hdr',
+        '../bearing-mates-night-out/static/night.hdr',
         scene,
         512,
     );
@@ -138,11 +124,11 @@ const createScene = function(
         scene,
     );
 
+    // Spheres
     let elements: BABYLON.Mesh[] = [];
     const metal = createMetal(scene, hdrTexture);
     for (let j = 0; j < NUMBER_OF_LAYERS; j++) {
         for (let i = 0; i < NUMBER_OF_ELEMS; i++) {
-            // Create a built-in "sphere" shape; its constructor takes 6 params: name, segment, diameter, scene, updatable, sideOrientation
             const sphere = BABYLON.Mesh.CreateSphere(
                 'sphere1',
                 16,
@@ -197,7 +183,7 @@ document.querySelector('button')!.addEventListener('click', function() {
     const { scene, elements } = createScene(engine, canvas);
     // scene.debugLayer.show();
     // showAxis(5, scene);
-    let numberOfLoops = 0;
+
     // run the render loop
     engine.runRenderLoop(() => {
         // numberOfLoops++;
@@ -227,4 +213,3 @@ document.querySelector('button')!.addEventListener('click', function() {
         scene.render();
     });
 });
-// call the createScene function

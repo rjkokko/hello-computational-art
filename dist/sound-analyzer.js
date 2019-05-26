@@ -47,7 +47,6 @@ function init() {
         console.log('getUserMedia not supported on your browser!');
     }
 }
-// });
 function getCurrentIntensity() {
     let dataArrayAlt = new Uint8Array(bufferLengthAlt);
     if (analyser) {
