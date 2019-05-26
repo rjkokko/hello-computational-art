@@ -24,5 +24,13 @@ function createMarble(scene) {
     mat.diffuseColor = BABYLON.Color3.Yellow();
     return mat;
 }
-export { createGlass, createMetal, createMarble };
+function createPlastic(scene) {
+    var plastic = new BABYLON.StandardMaterial('plastic', scene);
+    plastic.diffuseColor = BABYLON.Color3.Gray();
+    // plastic.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+    // plastic.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    // plastic.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+    return plastic;
+}
+export { createGlass, createMetal, createMarble, createPlastic };
 //# sourceMappingURL=materials.js.map

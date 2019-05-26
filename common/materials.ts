@@ -1,4 +1,4 @@
-function createGlass(scene: BABYLON.Scene, texture: BABYLON.HDRCubeTexture) {
+function createGlass(scene: BABYLON.Scene, texture: BABYLON.BaseTexture) {
     const glass = new BABYLON.PBRMaterial('glass', scene);
 
     glass.reflectionTexture = texture;
@@ -12,7 +12,7 @@ function createGlass(scene: BABYLON.Scene, texture: BABYLON.HDRCubeTexture) {
     return glass;
 }
 
-function createMetal(scene: BABYLON.Scene, texture: BABYLON.HDRCubeTexture) {
+function createMetal(scene: BABYLON.Scene, texture: BABYLON.BaseTexture) {
     var metal = new BABYLON.PBRMaterial('metal', scene);
     metal.reflectionTexture = texture;
     metal.microSurface = 0.96;
@@ -26,4 +26,15 @@ function createMarble(scene: BABYLON.Scene) {
     mat.diffuseColor = BABYLON.Color3.Yellow();
     return mat;
 }
-export { createGlass, createMetal, createMarble };
+
+function createPlastic(scene: BABYLON.Scene) {
+    var plastic = new BABYLON.StandardMaterial('plastic', scene);
+
+    plastic.diffuseColor = BABYLON.Color3.Gray();
+    // plastic.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+    // plastic.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    // plastic.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+    return plastic;
+}
+
+export { createGlass, createMetal, createMarble, createPlastic };

@@ -1,0 +1,65 @@
+@import 'https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css';
+@import url('https://fonts.googleapis.com/css?family=Economica&display=swap');
+body {
+    /* background: rgb(251, 165, 63); */
+    background-color: rgb(4, 138, 10);
+    background: radial-gradient(
+        circle,
+        rgba(4, 138, 10, 1) 0%,
+        rgba(10, 0, 2, 1) 100%
+    );
+    text-align: center;
+    font-family: 'Economica', sans-serif;
+
+    font-size: 6vw;
+    color: rgb(187, 188, 197);
+}
+
+@media only screen and (max-width: 900px) {
+    body {
+        font-size: 10vw;
+    }
+}
+
+#main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#lander {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    border-radius: 8px;
+    text-shadow: 3px 3px 2px rgba(0, 0, 0, 0.75);
+}
+#intro {
+    margin-bottom: 1em;
+}
+iframe {
+    margin-top: 1em;
+}
+#browser-support {
+    font-size: 0.25em;
+    font-style: italic;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.75);
+}
+button {
+    /* border: transparent; */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background: rgba(10, 0, 2, 1);
+    padding: 8px;
+    border-radius: 5px;
+}
+
+button,
+iframe {
+    -webkit-box-shadow: 6px 6px 3px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 6px 6px 3px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 6px 6px 3px 0px rgba(0, 0, 0, 0.75);
+}
