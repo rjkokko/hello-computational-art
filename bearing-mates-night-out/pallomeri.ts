@@ -1,5 +1,5 @@
-import { getCurrentIntensity, init } from './sound-analyzer.js';
-import { createMetal, createGlass } from './materials.js';
+import { getCurrentIntensity, init } from '../common/sound-analyzer.js';
+import { createMetal, createGlass } from '../common/materials.js';
 
 const createScene = function(
     engine: BABYLON.Engine,
