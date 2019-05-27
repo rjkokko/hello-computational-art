@@ -42,7 +42,7 @@ const createScene = function(
     );
     var directionalLight = new BABYLON.DirectionalLight(
         'DirectionalLight',
-        new BABYLON.Vector3(0, -1, 0),
+        new BABYLON.Vector3(0.25, -1, 0),
         scene,
     );
 
@@ -176,7 +176,7 @@ const createScene = function(
     }
 
     // Return the created scene
-    return { scene, elements };
+    return { scene, elements, directionalLight };
 };
 
 document.querySelector('button')!.addEventListener('click', function() {
@@ -194,7 +194,7 @@ document.querySelector('button')!.addEventListener('click', function() {
         engine.resize();
     });
     init();
-    const { scene, elements } = createScene(engine, canvas);
+    const { scene, elements, directionalLight } = createScene(engine, canvas);
     // scene.debugLayer.show();
     // showAxis(5, scene);
 
@@ -222,7 +222,12 @@ document.querySelector('button')!.addEventListener('click', function() {
                 elem.physicsImpostor!.applyImpulse(impulseVector, position);
             }
         });
-        // }
+        // adjust light
+        directionalLight.diffuse = new BABYLON.Color3(
+            (bassIntesity - 100) / 70,
+            0,
+            0,
+        );
 
         scene.render();
     });

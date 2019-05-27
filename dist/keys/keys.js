@@ -18,7 +18,7 @@ const createScene = function (engine, canvas) {
     camera.attachControl(canvas, false);
     //   Create a basic light, aiming 0, 1, 0 - meaning, to the sky
     const light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
-    var directionalLight = new BABYLON.DirectionalLight('DirectionalLight', new BABYLON.Vector3(0, -1, 0), scene);
+    var directionalLight = new BABYLON.DirectionalLight('DirectionalLight', new BABYLON.Vector3(0.25, -1, 0), scene);
     var skybox = BABYLON.MeshBuilder.CreateBox('skyBox', { size: 1000.0 }, scene);
     var skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene);
     skyboxMaterial.backFaceCulling = false;
@@ -96,7 +96,7 @@ const createScene = function (engine, canvas) {
         }
     }
     // Return the created scene
-    return { scene, elements };
+    return { scene, elements, directionalLight };
 };
 document.querySelector('button').addEventListener('click', function () {
     const canvas = document.createElement('canvas');
@@ -113,7 +113,7 @@ document.querySelector('button').addEventListener('click', function () {
         engine.resize();
     });
     init();
-    const { scene, elements } = createScene(engine, canvas);
+    const { scene, elements, directionalLight } = createScene(engine, canvas);
     // scene.debugLayer.show();
     // showAxis(5, scene);
     // run the render loop
@@ -133,7 +133,8 @@ document.querySelector('button').addEventListener('click', function () {
                 elem.physicsImpostor.applyImpulse(impulseVector, position);
             }
         });
-        // }
+        // adjust light
+        directionalLight.diffuse = new BABYLON.Color3((bassIntesity - 100) / 70, 0, 0);
         scene.render();
     });
 });
