@@ -190,11 +190,9 @@ document.querySelector('button')!.addEventListener('click', function() {
         // if (numberOfLoops >= 2) {
         //     numberOfLoops = 0;
         const audioIntensity = getCurrentIntensity();
-        const bassIntesity =
-            (audioIntensity[0] + audioIntensity[1] + audioIntensity[2]) / 3;
         const impulseVector = new BABYLON.Vector3(
             0,
-            (bassIntesity * 3) / 100,
+            (audioIntensity[0] * 3) / 100,
             0,
         );
         elements.forEach((elem) => {
@@ -203,7 +201,9 @@ document.querySelector('button')!.addEventListener('click', function() {
                 position.y <= 1 &&
                 position.y >= 0 &&
                 position.x < 25 &&
-                position.z < 25
+                position.x > -25 &&
+                position.z < 25 &&
+                position.z > -25
             ) {
                 elem.physicsImpostor!.applyImpulse(impulseVector, position);
             }
