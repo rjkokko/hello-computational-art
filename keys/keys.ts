@@ -22,65 +22,65 @@ function drawBox(
     ground.physicsImpostor = new BABYLON.PhysicsImpostor(
         ground,
         BABYLON.PhysicsImpostor.BoxImpostor,
-        { mass: 0, friction: 1, restitution: 0 },
+        { mass: 0, friction: 500, restitution: 0 },
         scene,
     );
 
     // Walls
-    var border0 = BABYLON.Mesh.CreateBox('border0', 1, scene);
-    border0.scaling = new BABYLON.Vector3(1, 10, boxSideLength);
-    border0.position.y = 5.0;
-    border0.position.x = -boxSideLength / 2;
-    border0.checkCollisions = true;
+    // var border0 = BABYLON.Mesh.CreateBox('border0', 1, scene);
+    // border0.scaling = new BABYLON.Vector3(1, 10, boxSideLength);
+    // border0.position.y = 5.0;
+    // border0.position.x = -boxSideLength / 2;
+    // border0.checkCollisions = true;
 
-    var border1 = BABYLON.Mesh.CreateBox('border1', 1, scene);
-    border1.scaling = new BABYLON.Vector3(1, 10, boxSideLength);
-    border1.position.y = 5.0;
-    border1.position.x = boxSideLength / 2;
-    border1.checkCollisions = true;
+    // var border1 = BABYLON.Mesh.CreateBox('border1', 1, scene);
+    // border1.scaling = new BABYLON.Vector3(1, 10, boxSideLength);
+    // border1.position.y = 5.0;
+    // border1.position.x = boxSideLength / 2;
+    // border1.checkCollisions = true;
 
-    var border2 = BABYLON.Mesh.CreateBox('border2', 1, scene);
-    border2.scaling = new BABYLON.Vector3(boxSideLength, 10, 1);
-    border2.position.y = 5.0;
-    border2.position.z = boxSideLength / 2;
-    border2.checkCollisions = true;
+    // var border2 = BABYLON.Mesh.CreateBox('border2', 1, scene);
+    // border2.scaling = new BABYLON.Vector3(boxSideLength, 10, 1);
+    // border2.position.y = 5.0;
+    // border2.position.z = boxSideLength / 2;
+    // border2.checkCollisions = true;
 
-    var border3 = BABYLON.Mesh.CreateBox('border3', 1, scene);
-    border3.scaling = new BABYLON.Vector3(boxSideLength, 10, 1);
-    border3.position.y = 5.0;
-    border3.position.z = -boxSideLength / 2;
-    border3.checkCollisions = true;
+    // var border3 = BABYLON.Mesh.CreateBox('border3', 1, scene);
+    // border3.scaling = new BABYLON.Vector3(boxSideLength, 10, 1);
+    // border3.position.y = 5.0;
+    // border3.position.z = -boxSideLength / 2;
+    // border3.checkCollisions = true;
 
-    border0.material = plastic;
-    border1.material = plastic;
-    border2.material = plastic;
-    border3.material = plastic;
+    // border0.material = plastic;
+    // border1.material = plastic;
+    // border2.material = plastic;
+    // border3.material = plastic;
 
-    border0.physicsImpostor = new BABYLON.PhysicsImpostor(
-        border0,
-        BABYLON.PhysicsImpostor.BoxImpostor,
-        { mass: 0 },
-        scene,
-    );
-    border1.physicsImpostor = new BABYLON.PhysicsImpostor(
-        border1,
-        BABYLON.PhysicsImpostor.BoxImpostor,
-        { mass: 0 },
-        scene,
-    );
-    border2.physicsImpostor = new BABYLON.PhysicsImpostor(
-        border2,
-        BABYLON.PhysicsImpostor.BoxImpostor,
-        { mass: 0 },
-        scene,
-    );
-    border3.physicsImpostor = new BABYLON.PhysicsImpostor(
-        border3,
-        BABYLON.PhysicsImpostor.BoxImpostor,
-        { mass: 0 },
-        scene,
-    );
-    return { ground, border0, border1, border2, border3 };
+    // border0.physicsImpostor = new BABYLON.PhysicsImpostor(
+    //     border0,
+    //     BABYLON.PhysicsImpostor.BoxImpostor,
+    //     { mass: 0 },
+    //     scene,
+    // );
+    // border1.physicsImpostor = new BABYLON.PhysicsImpostor(
+    //     border1,
+    //     BABYLON.PhysicsImpostor.BoxImpostor,
+    //     { mass: 0 },
+    //     scene,
+    // );
+    // border2.physicsImpostor = new BABYLON.PhysicsImpostor(
+    //     border2,
+    //     BABYLON.PhysicsImpostor.BoxImpostor,
+    //     { mass: 0 },
+    //     scene,
+    // );
+    // border3.physicsImpostor = new BABYLON.PhysicsImpostor(
+    //     border3,
+    //     BABYLON.PhysicsImpostor.BoxImpostor,
+    //     { mass: 0 },
+    //     scene,
+    // );
+    return { ground };
 }
 
 function importKeyMesh(scene: BABYLON.Scene): Promise<BABYLON.AbstractMesh> {
@@ -106,7 +106,7 @@ function importKeyMesh(scene: BABYLON.Scene): Promise<BABYLON.AbstractMesh> {
                 key.physicsImpostor = new BABYLON.PhysicsImpostor(
                     key,
                     BABYLON.PhysicsImpostor.BoxImpostor,
-                    { mass: 100, restitution: 0.03, friction: 1 },
+                    { mass: 100, restitution: 0.1, friction: 500 },
                     scene,
                 );
                 resolve(key);
@@ -130,7 +130,11 @@ const createScene = async function(
     const BOX_SIDE_LENGTH = 50;
     // Create a basic BJS Scene object
     const scene = new BABYLON.Scene(engine);
+
+    // right hand system makes models compatiple with blender
     scene.useRightHandedSystem = true;
+
+    // Enable phsysics
     const gravity = new BABYLON.Vector3(0, -9.81, 0);
     scene.enablePhysics(gravity, new BABYLON.OimoJSPlugin());
 
@@ -150,15 +154,20 @@ const createScene = async function(
     camera.setTarget(cameraTarget);
     // Attach the camera to the canvas
     camera.attachControl(canvas as HTMLElement, false);
-    //   Create a basic light, aiming 0, 1, 0 - meaning, to the sky
-    const light = new BABYLON.HemisphericLight(
-        'light1',
-        new BABYLON.Vector3(0, 1, 0),
+    const rightLight = new BABYLON.SpotLight(
+        'spotLight',
+        new BABYLON.Vector3(-30, 30, 30),
+        new BABYLON.Vector3(0.5, -1, -0.5),
+        Math.PI / 3,
+        2,
         scene,
     );
-    var directionalLight = new BABYLON.DirectionalLight(
-        'DirectionalLight',
-        new BABYLON.Vector3(0.25, -1, 0),
+    const leftLight = new BABYLON.SpotLight(
+        'spotLight',
+        new BABYLON.Vector3(30, 30, -30),
+        new BABYLON.Vector3(-0.5, -1, 0.5),
+        Math.PI / 3,
+        2,
         scene,
     );
 
@@ -209,21 +218,19 @@ const createScene = async function(
 
                 key.translate(new BABYLON.Vector3(1, 0, 0), 3);
 
-                // // physics
-                // key.physicsImpostor = new BABYLON.PhysicsImpostor(
-                //     key,
-                //     BABYLON.PhysicsImpostor.BoxImpostor,
-                //     { mass: 1, restitution: 0 },
-                //     scene,
-                // );
-
                 elements.push(key);
             }
         }
     }
 
     // Return the created scene
-    return { scene, elements, directionalLight, ground };
+    return {
+        scene,
+        elements,
+        rightLight,
+        leftLight,
+        ground,
+    };
 };
 
 document.querySelector('button')!.addEventListener('click', async function() {
@@ -241,20 +248,21 @@ document.querySelector('button')!.addEventListener('click', async function() {
         engine.resize();
     });
     init();
-    const { scene, elements, directionalLight, ground } = await createScene(
-        engine,
-        canvas,
-    );
+    const {
+        scene,
+        elements,
+        rightLight,
+        leftLight,
+        ground,
+    } = await createScene(engine, canvas);
     // scene.debugLayer.show();
     // showAxis(5, scene);
 
     // run the render loop
     engine.runRenderLoop(() => {
-        // numberOfLoops++;
-        // if (numberOfLoops >= 2) {
-        //     numberOfLoops = 0;
         const audioIntensity = getCurrentIntensity();
-        const bassIntesity = audioIntensity[0];
+        const bassIntesity =
+            (audioIntensity[0] + audioIntensity[1] + audioIntensity[2]) / 3;
         const impulseVector = new BABYLON.Vector3(0, bassIntesity / 100, 0);
         elements.forEach((elem) => {
             if (elem.intersectsMesh(ground, false)) {
@@ -263,22 +271,11 @@ document.querySelector('button')!.addEventListener('click', async function() {
                     elem.getAbsolutePosition(),
                 );
             }
-            // const position = elem.getAbsolutePosition();
-            // if (
-            //     position.y <= 1.5 &&
-            //     position.y >= 0 &&
-            //     Math.abs(position.x) < 25 &&
-            //     Math.abs(position.z) < 25
-            // ) {
-            // }
         });
         // adjust light
-        const lightIntesity = (bassIntesity - 100) / 70 / 3;
-        directionalLight.diffuse = new BABYLON.Color3(
-            lightIntesity,
-            lightIntesity,
-            lightIntesity,
-        );
+        const lightIntesity = (bassIntesity - 100) / 70;
+        rightLight.diffuse = new BABYLON.Color3(lightIntesity, 0, 0);
+        leftLight.diffuse = new BABYLON.Color3(lightIntesity, 0, 0);
 
         scene.render();
     });
