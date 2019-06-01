@@ -56,9 +56,9 @@ function drawBox(scene, reflectionTexture, boxSideLength) {
 }
 function importKeyMesh(scene) {
     return new Promise((resolve, reject) => {
-        BABYLON.SceneLoader.ImportMesh('', './static/', 'key.obj', scene, (newMeshes) => {
-            const key = newMeshes[1];
-            const text = newMeshes[0];
+        BABYLON.SceneLoader.ImportMesh('', './static/', 'esc.obj', scene, (newMeshes) => {
+            const key = newMeshes[0];
+            const text = newMeshes[1];
             text.parent = key;
             const keyMat = new BABYLON.StandardMaterial('plastic', scene);
             keyMat.backFaceCulling = false;
@@ -118,7 +118,7 @@ const createScene = function (engine, canvas) {
         const { ground } = drawBox(scene, spaceTexture, BOX_SIDE_LENGTH);
         // keys
         let elements = [];
-        // import key.obj
+        // import esc.obj
         let keyOriginal = yield importKeyMesh(scene);
         elements.push(keyOriginal);
         for (let j = 0; j < NUMBER_OF_LAYERS; j++) {
@@ -177,7 +177,7 @@ document.querySelector('button').addEventListener('click', function () {
             const bassIntesity = audioIntensity[0];
             const impulseVector = new BABYLON.Vector3(0, bassIntesity / 100, 0);
             elements.forEach((elem) => {
-                if (elem.intersectsMesh(ground, true)) {
+                if (elem.intersectsMesh(ground, false)) {
                     elem.physicsImpostor.applyImpulse(impulseVector, elem.getAbsolutePosition());
                 }
                 // const position = elem.getAbsolutePosition();

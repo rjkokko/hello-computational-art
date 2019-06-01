@@ -88,11 +88,11 @@ function importKeyMesh(scene: BABYLON.Scene): Promise<BABYLON.AbstractMesh> {
         BABYLON.SceneLoader.ImportMesh(
             '',
             './static/',
-            'key.obj',
+            'esc.obj',
             scene,
             (newMeshes: BABYLON.AbstractMesh[]) => {
-                const key = newMeshes[1];
-                const text = newMeshes[0];
+                const key = newMeshes[0];
+                const text = newMeshes[1];
                 text.parent = key;
 
                 const keyMat = new BABYLON.StandardMaterial('plastic', scene);
@@ -190,7 +190,7 @@ const createScene = async function(
     // keys
     let elements: BABYLON.AbstractMesh[] = [];
 
-    // import key.obj
+    // import esc.obj
     let keyOriginal = await importKeyMesh(scene);
     elements.push(keyOriginal);
 
@@ -257,7 +257,7 @@ document.querySelector('button')!.addEventListener('click', async function() {
         const bassIntesity = audioIntensity[0];
         const impulseVector = new BABYLON.Vector3(0, bassIntesity / 100, 0);
         elements.forEach((elem) => {
-            if (elem.intersectsMesh(ground, true)) {
+            if (elem.intersectsMesh(ground, false)) {
                 elem.physicsImpostor!.applyImpulse(
                     impulseVector,
                     elem.getAbsolutePosition(),
