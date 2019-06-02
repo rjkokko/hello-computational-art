@@ -1,4 +1,8 @@
-import { getCurrentIntensity, init } from '../common/sound-analyzer.js';
+import {
+    getCurrentIntensity,
+    init,
+    getCurrentBassIntesity,
+} from '../common/sound-analyzer.js';
 import { createMetal, createGlass } from '../common/materials.js';
 
 const createScene = function(
@@ -189,10 +193,9 @@ document.querySelector('button')!.addEventListener('click', function() {
         // numberOfLoops++;
         // if (numberOfLoops >= 2) {
         //     numberOfLoops = 0;
-        const audioIntensity = getCurrentIntensity();
         const impulseVector = new BABYLON.Vector3(
             0,
-            (audioIntensity[0] * 3) / 100,
+            getCurrentBassIntesity() / 10,
             0,
         );
         elements.forEach((elem) => {

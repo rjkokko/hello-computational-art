@@ -1,4 +1,4 @@
-import { getCurrentIntensity, init } from '../common/sound-analyzer.js';
+import { init, getCurrentBassIntesity } from '../common/sound-analyzer.js';
 import { createGlass, createPlastic } from '../common/materials.js';
 
 function drawBox(
@@ -171,6 +171,15 @@ const createScene = async function(
         scene,
     );
 
+    const centerLight = new BABYLON.SpotLight(
+        'centerLight',
+        new BABYLON.Vector3(0, 30, 0),
+        new BABYLON.Vector3(0, -1, 0),
+        Math.PI / 2,
+        1,
+        scene,
+    );
+
     var skybox = BABYLON.MeshBuilder.CreateBox(
         'skyBox',
         { size: 1000.0 },
@@ -227,6 +236,7 @@ const createScene = async function(
     return {
         scene,
         elements,
+        centerLight,
         rightLight,
         leftLight,
         ground,
@@ -251,6 +261,7 @@ document.querySelector('button')!.addEventListener('click', async function() {
     const {
         scene,
         elements,
+        centerLight,
         rightLight,
         leftLight,
         ground,
@@ -260,10 +271,8 @@ document.querySelector('button')!.addEventListener('click', async function() {
 
     // run the render loop
     engine.runRenderLoop(() => {
-        const audioIntensity = getCurrentIntensity();
-        const bassIntesity =
-            (audioIntensity[0] + audioIntensity[1] + audioIntensity[2]) / 3;
-        const impulseVector = new BABYLON.Vector3(0, bassIntesity / 100, 0);
+        const bassIntesity = getCurrentBassIntesity();
+        const impulseVector = new BABYLON.Vector3(0, bassIntesity / 30, 0);
         elements.forEach((elem) => {
             if (elem.intersectsMesh(ground, false)) {
                 elem.physicsImpostor!.applyImpulse(
@@ -273,9 +282,18 @@ document.querySelector('button')!.addEventListener('click', async function() {
             }
         });
         // adjust light
-        const lightIntesity = (bassIntesity - 100) / 70;
-        rightLight.diffuse = new BABYLON.Color3(lightIntesity, 0, 0);
-        leftLight.diffuse = new BABYLON.Color3(lightIntesity, 0, 0);
+        const lightIntesity = (bassIntesity - 40) / 50;
+        centerLight.diffuse = new BABYLON.Color3(
+            lightIntesity,
+            lightIntesity,
+            0,
+        );
+        rightLight.diffuse = new BABYLON.Color3(
+            lightIntesity,
+            0,
+            lightIntesity,
+        );
+        leftLight.diffuse = new BABYLON.Color3(0, lightIntesity, 0);
 
         scene.render();
     });

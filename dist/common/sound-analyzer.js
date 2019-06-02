@@ -28,7 +28,7 @@ function init() {
     analyser.minDecibels = -90;
     analyser.maxDecibels = -10;
     analyser.smoothingTimeConstant = 0.85;
-    analyser.fftSize = 32;
+    analyser.fftSize = 2048;
     bufferLengthAlt = analyser.frequencyBinCount;
     if (navigator.mediaDevices.getUserMedia) {
         console.log('getUserMedia supported.');
@@ -54,5 +54,13 @@ function getCurrentIntensity() {
     }
     return dataArrayAlt;
 }
-export { init, getCurrentIntensity };
+function getCurrentBassIntesity() {
+    const bassIntesity = getCurrentIntensity()
+        .slice(1, 10)
+        .reduce((sum, newValue) => {
+        return sum + newValue;
+    }, 0) / 10;
+    return bassIntesity;
+}
+export { init, getCurrentIntensity, getCurrentBassIntesity };
 //# sourceMappingURL=sound-analyzer.js.map
